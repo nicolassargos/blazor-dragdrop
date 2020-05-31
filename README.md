@@ -9,7 +9,7 @@ https://blazordragdrop.azurewebsites.net/
 
 ### Release notes:
 
-1.1.8: added the dropzone name in which an Draggable is dropped on its event OnDrop
+1.1.8: added the dropzone name in which an Draggable component is dropped on its event OnDrop
 
 #### Install:
 
