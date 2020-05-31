@@ -8,26 +8,70 @@
 
 <div id="main" class="container-fluid">
     <p>Drag the list items:</p>
-    <ul>
-        <Dropzone>
-            <Draggable>
-                <li class="list-group-item">Cras justo odio (order-pos: @context.OrderPosition)</li>
-            </Draggable>
-            <Draggable>
-                <li class="list-group-item">Dapibus ac facilisis in (order-pos: @context.OrderPosition)</li>
-            </Draggable>
-            <Draggable>
-                <li class="list-group-item">Morbi leo risus (order-pos: @context.OrderPosition)</li>
-            </Draggable>
-            <Draggable>
-                <li class="list-group-item">Porta ac consectetur ac (order-pos: @context.OrderPosition)</li>
-            </Draggable>
-            <Draggable>
-                <li class="list-group-item">Vestibulum at eros (order-pos: @context.OrderPosition)</li>
-            </Draggable>
-        </Dropzone>
-    </ul>
+    @if (gids != null)
+    {
+        <div class="row">
+            @for (int i = 1; i <= gids.Max(x => x.Id); i++)
+            {
+                var index = i;
+                var items = gids.Where(x => x.Id == index);
+                <ul class="col-3">
+                    <Dropzone Name="@i.ToString()" @ref="test">
+                        @foreach (var item in items)
+                        {
+                            <Draggable OnDrop="((i, n, e) => OnDropped(i,n, e))">
+                                <li class="list-group-item">Cras justo odio (order-pos: @(item.Name.ToString())</li>
+                            </Draggable>
+                        }
+                    </Dropzone>
+                </ul>
+            }
+        </div>
+    }
 </div>
+<hr />
+<button type="button" class="btn btn-primary" @onclick="CreateRandomGid">Add</button>
 <hr />
 <h5>Code:</h5>
 <DisplayCode>&lt;ul&gt;<br />    &lt;Dropzone&gt;<br />        &lt;Draggable&gt;<br />            &lt;li class=&quot;list-group-item&quot;&gt;Cras justo odio (order-pos: @@context.OrderPosition)&lt;/li&gt;<br />        &lt;/Draggable&gt;<br />        &lt;Draggable&gt;<br />            &lt;li class=&quot;list-group-item&quot;&gt;Dapibus ac facilisis in (order-pos: @@context.OrderPosition)&lt;/li&gt;<br />        &lt;/Draggable&gt;<br />        &lt;Draggable&gt;<br />            &lt;li class=&quot;list-group-item&quot;&gt;Morbi leo risus (order-pos: @@context.OrderPosition)&lt;/li&gt;<br />        &lt;/Draggable&gt;<br />        &lt;Draggable&gt;<br />            &lt;li class=&quot;list-group-item&quot;&gt;Porta ac consectetur ac (order-pos: @@context.OrderPosition)&lt;/li&gt;<br />        &lt;/Draggable&gt;<br />        &lt;Draggable&gt;<br />            &lt;li class=&quot;list-group-item&quot;&gt;Vestibulum at eros (order-pos: @@context.OrderPosition)&lt;/li&gt;<br />        &lt;/Draggable&gt;<br />    &lt;/Dropzone&gt;<br />&lt;/ul&gt;</DisplayCode>
+
+
+@code {
+
+    public Dropzone test { get; set; }
+
+    public List<Gid> gids { get; set; } = new List<Gid>();
+
+
+    protected override void OnInitialized()
+    {
+        for (int i = 1; i < 5; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                gids.Add(new Gid() { Id = i, Name = Guid.NewGuid() });
+            }
+        }
+
+    }
+
+    public void CreateRandomGid()
+    {
+        var rand = new Random();
+
+        gids.Add(new Gid() { Id = rand.Next(1, 5), Name = Guid.NewGuid() });
+        StateHasChanged();
+    }
+
+
+    public void OnDropped(dynamic item, string zoneName, int index)
+    {
+        Console.WriteLine(zoneName);
+    }
+
+    public class Gid
+    {
+        public int Id { get; set; }
+        public Guid Name { get; set; }
+    }
+}

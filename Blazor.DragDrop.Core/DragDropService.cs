@@ -84,13 +84,14 @@ namespace Blazor.DragDrop.Core
             bool acceptsDrop = AcceptsElement(targetDropzoneId);
             bool maxItemLimitReached = _dic[targetDropzoneId].Count >= _dropzoneOptions[targetDropzoneId].MaxItems;
             bool allowSwap = _dropzoneOptions[targetDropzoneId].AllowSwap;
+            string targetZoneName = _dropzoneOptions[targetDropzoneId].Name;
             var orderPosition = GetOrderPosition(targetDropzoneId, ActiveItem.Id);
 
             if (targetDropzoneId == ActiveItem.DropzoneId)
             {
 
                 //inform about the drop
-                ActiveItem.OnDrop?.Invoke(ActiveItem.Tag, orderPosition);
+                ActiveItem.OnDrop?.Invoke(ActiveItem.Tag, targetZoneName, orderPosition);
                 //Clear active item
                 ActiveItem = null;
                 //early exit
@@ -134,7 +135,7 @@ namespace Blazor.DragDrop.Core
             ActiveItem.DropzoneId = targetDropzoneId;
 
             //inform about the drop
-            ActiveItem.OnDrop?.Invoke(ActiveItem.Tag, orderPosition);
+            ActiveItem.OnDrop?.Invoke(ActiveItem.Tag, targetZoneName, orderPosition);
 
             //Clear active item
             ActiveItem = null;
@@ -306,9 +307,9 @@ namespace Blazor.DragDrop.Core
             return result;
         }
 
-        public bool HasDropzoneDraggables(string dropzoneName)
+        public bool HasDropzoneDraggables(string droptargetZoneName)
         {
-            var hit = _dropzoneOptions.SingleOrDefault(x => x.Value.Name == dropzoneName);
+            var hit = _dropzoneOptions.SingleOrDefault(x => x.Value.Name == droptargetZoneName);
 
             if(hit.Key == 0) return false;
 
@@ -316,9 +317,9 @@ namespace Blazor.DragDrop.Core
         }
 
 
-        public List<DraggableItem> GetDraggablesForDropzone(string dropzoneName)
+        public List<DraggableItem> GetDraggablesForDropzone(string droptargetZoneName)
         {
-            var id = _dropzoneOptions.Single(x => x.Value.Name == dropzoneName).Key;
+            var id = _dropzoneOptions.Single(x => x.Value.Name == droptargetZoneName).Key;
             return GetDraggablesForDropzone(id);
         }
 
@@ -341,9 +342,9 @@ namespace Blazor.DragDrop.Core
             return _dropzoneOptions[dropzoneId];
         }
 
-        public DropzoneOptions GetDropzoneOptionsByName(string dropzoneName)
+        public DropzoneOptions GetDropzoneOptionsByName(string droptargetZoneName)
         {
-            return _dropzoneOptions.Single(x => x.Value.Name == dropzoneName).Value;
+            return _dropzoneOptions.Single(x => x.Value.Name == droptargetZoneName).Value;
         }
 
         private bool AcceptsElement(int dropzoneId)
