@@ -9,7 +9,7 @@ https://blazordragdrop.azurewebsites.net/
 
 ### Release notes:
 
-1.1.8: added the dropzone name in which an Draggable component is dropped on its event OnDrop. Event now triggers an event with those args: ```csharp OnDrop(dynamic d, string name, int orderPosition) ``` .
+1.1.8: added the dropzone name in which an Draggable component is dropped on its event OnDrop. Event now triggers an event with those args: ``` OnDrop(dynamic d, string name, int orderPosition) ``` .
 Dynamic parameter is the Tag parameter of the Draggable component dropped.
 
 
