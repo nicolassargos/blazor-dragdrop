@@ -7,6 +7,10 @@ Drag and Drop Library for Blazor
 
 https://blazordragdrop.azurewebsites.net/
 
+### Release notes:
+
+1.1.8: added the dropzone name in which an Draggable is dropped on its event OnDrop
+
 #### Install:
 
 Install-Package blazor-dragdrop
